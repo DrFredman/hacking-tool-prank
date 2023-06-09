@@ -1,0 +1,89 @@
+global _start
+
+section .text
+
+_start:
+    mov eax, 0x4
+    mov ebx, 0x1
+    mov ecx, message
+    mov edx, 0xF
+    int 0x80
+
+    mov eax, 0x1
+    mov ebx, 0x0
+    int 0x80
+
+#define PRIVATE_HANDS_OFF_p_buf p_buf
+#define PRIVATE_HANDS_OFF_len len
+#define PRIVATE_HANDS_OFF_alloc_bytes alloc_bytes
+#include "str.h"
+#include "utility.h"
+#include "sysutil.h"
+
+static void str_split_text_common(struct mystr* p_src, struct mystr* p_rhs,
+    const char* p_text, int is_reverse);
+static int str_equal_internal(const char* p_buf1, unsigned int buf1_len,
+    const char* p_buf2, unsigned int buf2_len);
+
+static void
+s_setbuf(struct mystr* p_str, char* p_newbuf)
+{
+  if (p_str->p_buf != 0)
+  {
+    bug("p_buf not NULL when setting it");
+  }
+  p_str->p_buf = p_newbuf;
+}
+
+void
+private_str_alloc_memchunk(struct mystr* p_str, const char* p_src,
+                           unsigned int len)
+{
+  /* Make sure this will fit in the buffer */
+  unsigned int buf_needed = len + 1;
+  if (buf_needed > p_str->alloc_bytes)
+  {
+    str_free(p_str);
+    s_setbuf(p_str, vsf_sysutil_malloc(buf_needed));
+    p_str->alloc_bytes = buf_needed;
+  }
+  vsf_sysutil_memcpy(p_str->p_buf, p_src, len);
+  p_str->p_buf[len] = '\0';
+  p_str->len = len;
+}
+
+void
+private_str_append_memchunk(struct mystr* p_str, const char* p_src,
+                            unsigned int len)
+{
+  unsigned int buf_needed = p_str->len + len + 1;
+  if (buf_needed > p_str->alloc_bytes)
+  {
+    p_str->p_buf = vsf_sysutil_realloc(p_str->p_buf, buf_needed);
+    p_str->alloc_bytes = buf_needed;
+  }
+  vsf_sysutil_memcpy(p_str->p_buf + p_str->len, p_src, len);
+  p_str->p_buf[p_str->len + len] = '\0';
+  p_str->len += len;
+}
+
+/* Public functions */
+void
+str_alloc_text(struct mystr* p_str, const char* p_src)
+{
+  unsigned int len = vsf_sysutil_strlen(p_src);
+  private_str_alloc_memchunk(p_str, p_src, len);
+}
+
+void
+str_copy(struct mystr* p_dest, const struct mystr* p_src)
+{
+  private_str_alloc_memchunk(p_dest, p_src->p_buf, p_src->len);
+}
+
+const char*
+str_strdup(const struct mystr* p_str)
+{
+  return vsf_sysutil_strdup(str_getbuf(p_str));
+}
+
