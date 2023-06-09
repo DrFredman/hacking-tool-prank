@@ -8,7 +8,7 @@ command1 = 'cmatrix; read -p "01110111"'
 filename = "SQLHackLib.lib"
 creds1 = "Pa$$w0rd1!"
 creds2 = "AXp7jR2<Jt1"
-#youremail = "your email here"
+#yourEmail = "your email here"
 #customcreds = "password to your email here"
 
 if os.path.isfile(filename):
@@ -60,7 +60,7 @@ if answer1 in ["adamwells13245@gmail.com", "kaguya.sakamora@gmail.com", yourEmai
             print("Target credentials found: " + creds1)
         elif(answer1 == "kaguya.sakamora@gmail.com"):
             print("Target credentials found: " + creds2)
-        elif(answer1 == youremail):
+        elif(answer1 == yourEmail):
             print("Target credentials found: " + customcreds)
         time.sleep(1)
         print("Shreding log remains...")
