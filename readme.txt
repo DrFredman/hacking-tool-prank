@@ -8,4 +8,4 @@ TOOLS TO INSTALL BEFORE RUNNING SCRIPT (for ubuntu/debian)
 Cmatrix: apt-get install cmatrix
 Mate Terminal: apt-get install mate-terminal
 
-Last thng, when the script asjs you for a port number, enter 3306 as that is the default MySQL port number. 
+Last thing, when the script asjs you for a port number, enter 3306 as that is the default MySQL port number. 
