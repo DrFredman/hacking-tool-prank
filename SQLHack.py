@@ -75,4 +75,4 @@ else:
     print("Target secure; unable to hack.")
     sys.exit(0)
     
-#What're you doing here?
+#Hello there
