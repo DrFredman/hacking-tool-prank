@@ -6,7 +6,7 @@ import sys
 command = "tree /lib"
 command1 = 'cmatrix; read -p "01110111"'
 filename = "SQLHackLib.lib"
-creds1 = "hardpassword24"
+creds1 = "Pa$$w0rd1!"
 creds2 = "AXp7jR2<Jt1"
 #youremail = "your email here"
 #customcreds = "password to your email here"
